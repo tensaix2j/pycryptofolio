@@ -1,0 +1,8 @@
+{
+	"dbhost":"localhost",
+	"dbport":5432,
+	"dbname":"cryptotickers",
+	"dbuser":"example_user",
+	"dbpass":"example_password"
+}
+
