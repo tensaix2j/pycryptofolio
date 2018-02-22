@@ -45,6 +45,42 @@ def get_from_binance(plate):
 		
 
 
+
+def get_from_hitbtc(plate):
+
+	print("get_from_hitbtc")
+
+	#https://api.hitbtc.com/api/1/public/ticker
+	conn = http.client.HTTPSConnection("api.hitbtc.com", 443)
+	conn.request("GET","/api/1/public/ticker")
+	r1 = conn.getresponse()
+	print(r1.status, r1.reason)
+
+	rawstr = r1.read()
+	data = json.loads( str(rawstr,'utf-8'))
+
+	for pair in data.keys():
+		
+		try:
+			price 	= float( data[pair]["last"])
+
+			if "USDT" in pair:
+				quote = "USDT"
+			else:
+				quote = pair[-3:]
+
+			base = pair[0:len(pair)-len(quote)]
+			if quote == "USD":
+				quote = "USDT"
+				
+			plate["HITBTC", base, quote ] = price 
+
+		except Exception as ex:
+			print("Error : {}".format(ex))		
+		
+
+
+
 def get_from_kucoin(plate):
 
 	print("get_from_kucoin")
@@ -244,7 +280,9 @@ def main():
 
 	plate = {}
 	
+
 	get_from_binance( plate )
+	get_from_hitbtc( plate )
 	get_from_kucoin( plate )
 	get_from_bittrex( plate )
 	get_from_huobi(plate, "HT", "USDT" )
