@@ -93,7 +93,12 @@ function SimpleList() {
 			str += "<li>";
 
 				var sl_obj 		= sl.portfolio[i];
-				var chart_url 	= this.sprintf("http://tradingview.com/e?symbol=BINANCE:%sUSD", sl_obj.base );	
+				var quote 		= "BTC";
+				if ( sl_obj.base == "BTC" || sl_obj.base == "ETH" ) {
+					quote = "USDT";
+				}
+
+				var chart_url 	= this.sprintf("http://tradingview.com/e?symbol=%s%s", sl_obj.base , quote );	
 				
 				str += "<div class='curr_rate_header'>"
 					str += this.sprintf( "<div class='curr_rate_symbol'><a href='%s' target='_blank'>%s</a></div>", chart_url, sl_obj.base );
