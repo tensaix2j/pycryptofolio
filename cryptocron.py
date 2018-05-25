@@ -208,12 +208,17 @@ def store(plate):
 
 	print("Storing data")
 	
-	if not os.path.exists("config.json"):
-		print("Need config.json")
-		return
+	script_dir = os.path.dirname(sys.argv[0])
+    if script_dir == "":
+        script_dir = "."
+      config_file = "{0}/config.json".format(script_dir) 
 
+	if not os.path.exists(config_file):
+        print("{} does not exist".format(config_file) )
+        return
 
-	fi = open("config.json", "r") 
+        
+	fi = open(config_file, "r") 
 	config = json.loads( fi.read() )
 	
 	dbhost = config["dbhost"]
@@ -243,6 +248,8 @@ def store(plate):
 		else:
 			print("Table exists")
 
+
+		
 
 		# Get existinf records	
 		cur.execute("SELECT provider,base,quote from market ")
