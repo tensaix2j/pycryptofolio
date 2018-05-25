@@ -1,4 +1,4 @@
-import os
+import os,sys
 import tornado.ioloop
 import tornado.web as web
 from pprint import pprint
@@ -38,7 +38,7 @@ class CryptoTickersHandler(tornado.web.RequestHandler):
         holdings = json.loads( str(rawstr,'utf-8'))
         
         # Check for table existence
-        cur.execute("SELECT provider,base,quote,price from {} where base in ({}) order by provider".format(table_name , ",".join( map( lambda x:"'" + x + "'", holdings.keys()) )  ) ) 
+        cur.execute("SELECT provider,base,quote,price from {} where base in ({}) and provider not in ('HITBTC') order by provider".format(table_name , ",".join( map( lambda x:"'" + x + "'", holdings.keys()) )  ) ) 
         recs = cur.fetchall()
 
         market = {}
@@ -156,11 +156,16 @@ if __name__ == "__main__":
     
     try:
 
-      if not os.path.exists("config.json"):
-        print("Need config.json")
+      script_dir = os.path.dirname(sys.argv[0])
+      if script_dir == "":
+        script_dir = "."
+      config_file = "{0}/config.json".format(script_dir) 
+
+      if not os.path.exists(config_file):
+        print("{} does not exist".format(config_file) )
         exit()  
 
-      fi = open("config.json", "r") 
+      fi = open( config_file, "r") 
       config = json.loads( fi.read() )
       dbhost = config["dbhost"]
       dbport = config["dbport"]
