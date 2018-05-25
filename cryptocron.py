@@ -209,15 +209,15 @@ def store(plate):
 	print("Storing data")
 	
 	script_dir = os.path.dirname(sys.argv[0])
-    if script_dir == "":
-        script_dir = "."
-      config_file = "{0}/config.json".format(script_dir) 
+	if script_dir == "":
+		script_dir = "."
+	config_file = "{0}/config.json".format(script_dir) 
 
 	if not os.path.exists(config_file):
-        print("{} does not exist".format(config_file) )
-        return
+		print("{} does not exist".format(config_file) )
+		return
 
-        
+
 	fi = open(config_file, "r") 
 	config = json.loads( fi.read() )
 	
